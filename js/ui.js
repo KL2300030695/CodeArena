@@ -80,7 +80,7 @@ const UI = (() => {
   }
 
   // ── Dashboard / Landing Page ──
-  function renderDashboard() {
+  async function renderDashboard() {
     const session = Auth.getSession();
     const stats = Auth.getStats();
 
@@ -226,7 +226,7 @@ const UI = (() => {
             </div>
             <div class="stat-card">
               <div class="stat-icon" style="background:rgba(6,182,212,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg></div>
-              <div class="stat-value">${Leaderboard.getUserRank(session.username) || '-'}</div>
+              <div class="stat-value">${(await Leaderboard.getUserRank(session.username)) || '-'}</div>
               <div class="stat-label">Your Rank</div>
             </div>
           </div>
@@ -341,7 +341,7 @@ const UI = (() => {
   }
 
   // ── Problem Detail Page ──
-  function renderProblemDetail(id) {
+  async function renderProblemDetail(id) {
     const problem = PROBLEMS.find(p => p.id === parseInt(id));
     if (!problem) {
       return `${renderNavbar()}<div class="page-container"><div class="empty-state"><div class="empty-icon">❌</div><h3>Problem not found</h3></div></div>`;
@@ -435,7 +435,7 @@ const UI = (() => {
 
               <div id="tab-content-submissions" style="display:none">
                 <div id="problem-submissions-list" style="margin-top:16px">
-                  ${renderProblemSubmissions(problem.id)}
+                  ${await renderProblemSubmissions(problem.id)}
                 </div>
               </div>
             </div>
@@ -500,11 +500,11 @@ const UI = (() => {
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   }
 
-  function renderProblemSubmissions(problemId) {
+  async function renderProblemSubmissions(problemId) {
     const session = Auth.getSession();
     if (!session) return '<div class="empty-state"><p class="text-muted">Sign in to view your submissions</p></div>';
 
-    const subs = Submissions.getFiltered({ username: session.username, problemId });
+    const subs = await Submissions.getFiltered({ username: session.username, problemId });
     if (subs.length === 0) {
       return '<div class="empty-state"><p class="text-muted">No submissions yet</p></div>';
     }
@@ -525,13 +525,13 @@ const UI = (() => {
   }
 
   // ── Submissions Page ──
-  function renderSubmissions() {
+  async function renderSubmissions() {
     const session = Auth.getSession();
     if (!session) {
       return `${renderNavbar()}<div class="page-container"><div class="empty-state"><div class="empty-icon">🔒</div><h3>Sign in to view submissions</h3><button class="btn btn-primary mt-lg" onclick="location.hash='#/login'">Sign In</button></div></div>`;
     }
 
-    const subs = Submissions.getByUser(session.username);
+    const subs = await Submissions.getByUser(session.username);
 
     const rows = subs.map(s => `
       <tr onclick="location.hash='#/problem/${s.problemId}'" style="cursor:pointer">
@@ -582,8 +582,8 @@ const UI = (() => {
   }
 
   // ── Leaderboard Page ──
-  function renderLeaderboard() {
-    const rankings = Leaderboard.getRankings();
+  async function renderLeaderboard() {
+    const rankings = await Leaderboard.getRankings();
 
     const rows = rankings.map((user, idx) => {
       const rank = idx + 1;
@@ -701,16 +701,16 @@ const UI = (() => {
   }
 
   // ── Profile Page ──
-  function renderProfile() {
+  async function renderProfile() {
     const session = Auth.getSession();
     if (!session) {
       return `${renderNavbar()}<div class="page-container"><div class="empty-state"><div class="empty-icon">🔒</div><h3>Sign in to view your profile</h3><button class="btn btn-primary mt-lg" onclick="location.hash='#/login'">Sign In</button></div></div>`;
     }
 
     const user = Auth.getCurrentUser();
-    const stats = Submissions.getUserStats(session.username);
+    const stats = await Submissions.getUserStats(session.username);
     const authStats = Auth.getStats();
-    const rank = Leaderboard.getUserRank(session.username);
+    const rank = await Leaderboard.getUserRank(session.username);
 
     const joinDate = new Date(session.joinDate).toLocaleDateString('en-US', {
       year: 'numeric', month: 'long', day: 'numeric'
@@ -987,7 +987,7 @@ const UI = (() => {
 
       // Record submission
       const totalRuntime = result.results.reduce((sum, r) => sum + r.runtime, 0);
-      Submissions.add({
+      await Submissions.add({
         username: session.username,
         problemId: problem.id,
         problemTitle: problem.title,

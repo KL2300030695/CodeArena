@@ -41,13 +41,13 @@ const App = (() => {
     currentProblemId = null;
 
     if (route.type === 'problem') {
-      appEl.innerHTML = UI.renderProblemDetail(route.id);
+      appEl.innerHTML = await UI.renderProblemDetail(route.id);
       currentProblemId = parseInt(route.id);
       await initEditor(currentProblemId);
       initPanelResizer();
     } else {
       const renderer = routes[route.hash] || routes['#/'];
-      appEl.innerHTML = renderer();
+      appEl.innerHTML = await renderer();
     }
 
     currentRoute = location.hash;
@@ -169,9 +169,19 @@ const App = (() => {
   }
 
   // Initialize the app
-  function init() {
+  async function init() {
     window.addEventListener('hashchange', render);
     initGlobalShortcuts();
+    
+    // Fetch user session first if token exists
+    if (Auth.getToken()) {
+      await Auth.fetchCurrentUser();
+    }
+    
+    // Remove the initial loader from index.html if it exists
+    const loader = document.querySelector('.initial-loader');
+    if (loader) loader.remove();
+    
     render();
   }
 

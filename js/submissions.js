@@ -1,98 +1,101 @@
-// ============================================
-// TCS NQT Coding Platform — Submissions
-// ============================================
-
 const Submissions = (() => {
-  const SUBMISSIONS_KEY = 'tcs_nqt_submissions';
-
-  function getAll() {
-    try {
-      return JSON.parse(localStorage.getItem(SUBMISSIONS_KEY)) || [];
-    } catch {
-      return [];
-    }
-  }
-
-  function saveAll(submissions) {
-    localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
-  }
+  const API_URL = '/api';
 
   return {
-    // Add a new submission
-    add(submission) {
-      const all = getAll();
-      const entry = {
-        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-        username: submission.username,
-        problemId: submission.problemId,
-        problemTitle: submission.problemTitle,
-        language: submission.language,
-        code: submission.code,
-        status: submission.status,
-        passed: submission.passed,
-        total: submission.total,
-        runtime: submission.runtime || 0,
-        timestamp: new Date().toISOString()
-      };
-      all.unshift(entry); // newest first
-      // Keep last 500 submissions
-      if (all.length > 500) all.length = 500;
-      saveAll(all);
-      return entry;
+    async add(submission) {
+      const token = Auth.getToken();
+      if (!token) return null;
+      try {
+        const res = await fetch(`${API_URL}/submissions`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(submission)
+        });
+        const data = await res.json();
+        
+        // Optimistically update local user stats
+        if (data.success && data.submission.status === 'Accepted') {
+          Auth.markSolved(submission.problemId);
+        } else if (data.success) {
+          Auth.markAttempted(submission.problemId);
+        }
+
+        return data.submission;
+      } catch (e) {
+        console.error('Failed to add submission', e);
+        return null;
+      }
     },
 
-    // Get submissions for a specific user
-    getByUser(username) {
-      return getAll().filter(s => s.username === username);
+    async getByUser(username) {
+      try {
+        const res = await fetch(`${API_URL}/submissions?username=${encodeURIComponent(username)}`);
+        const data = await res.json();
+        return data.success ? data.submissions : [];
+      } catch (e) {
+        return [];
+      }
     },
 
-    // Get submissions for a specific problem
-    getByProblem(problemId) {
-      return getAll().filter(s => s.problemId === problemId);
+    async getByProblem(problemId) {
+      try {
+        const res = await fetch(`${API_URL}/submissions?problemId=${encodeURIComponent(problemId)}`);
+        const data = await res.json();
+        return data.success ? data.submissions : [];
+      } catch (e) {
+        return [];
+      }
     },
 
-    // Get submissions filtered
-    getFiltered({ username, problemId, status, language } = {}) {
-      let results = getAll();
-      if (username) results = results.filter(s => s.username === username);
-      if (problemId) results = results.filter(s => s.problemId === problemId);
-      if (status) results = results.filter(s => s.status === status);
-      if (language) results = results.filter(s => s.language === language);
-      return results;
+    async getFiltered({ username, problemId, status, language } = {}) {
+      try {
+        const params = new URLSearchParams();
+        if (username) params.append('username', username);
+        if (problemId) params.append('problemId', problemId);
+        if (status) params.append('status', status);
+        if (language) params.append('language', language);
+
+        const res = await fetch(`${API_URL}/submissions?${params.toString()}`);
+        const data = await res.json();
+        return data.success ? data.submissions : [];
+      } catch (e) {
+        return [];
+      }
     },
 
-    // Get user's best submission for a problem
-    getBest(username, problemId) {
-      const subs = getAll().filter(s => s.username === username && s.problemId === problemId);
+    async getBest(username, problemId) {
+      const subs = await this.getFiltered({ username, problemId });
+      if (!subs || subs.length === 0) return null;
       const accepted = subs.filter(s => s.status === 'Accepted');
       if (accepted.length > 0) {
         return accepted.reduce((best, s) => s.runtime < best.runtime ? s : best);
       }
-      return subs[0] || null;
+      return subs[0];
     },
 
-    // Get submission count stats for a user
-    getUserStats(username) {
-      const subs = getAll().filter(s => s.username === username);
-      const accepted = subs.filter(s => s.status === 'Accepted');
-      const uniqueSolved = [...new Set(accepted.map(s => s.problemId))];
-      const totalAttempts = subs.length;
-      const acceptanceRate = totalAttempts > 0 ? Math.round((accepted.length / totalAttempts) * 100) : 0;
-
-      return {
-        totalSubmissions: totalAttempts,
-        accepted: accepted.length,
-        uniqueSolved: uniqueSolved.length,
-        acceptanceRate
-      };
+    async getUserStats(username) {
+      try {
+        const res = await fetch(`${API_URL}/submissions/stats/${encodeURIComponent(username)}`);
+        const data = await res.json();
+        if (data.success) return data.stats;
+      } catch (e) {}
+      
+      return { totalSubmissions: 0, accepted: 0, uniqueSolved: 0, acceptanceRate: 0 };
     },
 
-    // Get all submissions (for leaderboard)
-    getAll() {
-      return getAll();
+    async getAll() {
+      try {
+        const res = await fetch(`${API_URL}/submissions`);
+        const data = await res.json();
+        return data.success ? data.submissions : [];
+      } catch (e) {
+        return [];
+      }
     },
 
-    // Format timestamp for display
     formatTime(isoString) {
       const date = new Date(isoString);
       const now = new Date();
