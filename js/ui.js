@@ -862,15 +862,17 @@ const UI = (() => {
       }
       try {
         const result = await window.FirebaseSignInWithPopup(window.FirebaseAuth, window.FirebaseProvider);
-        const token = await result.user.getIdToken();
         
-        const backendResult = await Auth.loginWithGoogle(token);
-        if (backendResult.success) {
-          showToast('Welcome, ' + backendResult.user.username + '!', 'success');
+        // Auth.js automatically handles the profile creation via onAuthStateChanged.
+        // We just need to wait for it to be ready.
+        const user = await Auth.fetchCurrentUser();
+        
+        if (user) {
+          showToast('Welcome, ' + user.username + '!', 'success');
           location.hash = '#/';
           App.render();
         } else {
-          showToast(backendResult.error || 'Google Login Failed', 'error');
+          showToast('Google Login Failed', 'error');
         }
       } catch (error) {
         console.error("Firebase Login Error:", error);
