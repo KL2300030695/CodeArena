@@ -153,6 +153,28 @@ const Auth = (() => {
           attempted: currentUser.attempted
         });
       }
+    },
+
+    async changeUsername(newUsername) {
+      if (!currentUser) return { success: false, error: 'Not logged in' };
+      if (!newUsername || newUsername.trim().length < 3) return { success: false, error: 'Username must be at least 3 characters' };
+      
+      const trimmed = newUsername.trim();
+      
+      try {
+        const { doc, updateDoc } = window.FirebaseFirestore;
+        const userRef = doc(window.FirebaseDB, "users", currentUser.uid);
+        
+        await updateDoc(userRef, {
+          username: trimmed
+        });
+        
+        currentUser.username = trimmed;
+        return { success: true };
+      } catch (error) {
+        console.error("Change Username Error:", error);
+        return { success: false, error: 'Failed to update username' };
+      }
     }
   };
 })();

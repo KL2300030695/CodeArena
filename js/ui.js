@@ -751,7 +751,10 @@ const UI = (() => {
             ${session.username[0].toUpperCase()}
           </div>
           <div class="profile-info">
-            <h2>${session.username}</h2>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h2>${session.username}</h2>
+              <button class="btn btn-ghost btn-sm" onclick="UI.promptChangeUsername()" style="padding: 4px; font-size: 1rem;" title="Change Username">✏️</button>
+            </div>
             <div class="profile-email">${session.email}</div>
             <div class="profile-date">Joined ${joinDate}</div>
           </div>
@@ -877,6 +880,19 @@ const UI = (() => {
       } catch (error) {
         console.error("Firebase Login Error:", error);
         showToast(error.message || 'Firebase authentication failed', 'error');
+      }
+    },
+
+    async promptChangeUsername() {
+      const newUsername = prompt("Enter your new username (at least 3 characters):");
+      if (newUsername && newUsername.trim().length >= 3) {
+        const result = await Auth.changeUsername(newUsername);
+        if (result.success) {
+          showToast('Username updated successfully', 'success');
+          App.render();
+        } else {
+          showToast(result.error || 'Failed to update username', 'error');
+        }
       }
     },
 

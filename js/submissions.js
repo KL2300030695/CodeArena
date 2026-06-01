@@ -63,7 +63,18 @@ const Submissions = (() => {
     },
 
     async getUserStats(username) {
-       return Auth.getStats();
+       const session = Auth.getSession();
+       if (!session) return { totalSubmissions: 0, acceptanceRate: 0 };
+       
+       const subs = await this.getByUser(username);
+       const totalSubmissions = subs.length;
+       const accepted = subs.filter(s => s.status === 'Accepted').length;
+       const acceptanceRate = totalSubmissions > 0 ? Math.round((accepted / totalSubmissions) * 100) : 0;
+       
+       return {
+         totalSubmissions,
+         acceptanceRate
+       };
     }
   };
 })();
