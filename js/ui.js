@@ -372,7 +372,7 @@ const UI = (() => {
           <span>💡 Hint ${i + 1}</span>
           <span>▼</span>
         </div>
-        <div class="hint-content">${hint}</div>
+        <div class="hint-content">${formatMarkdown(hint)}</div>
       </div>
     `).join('');
 
@@ -411,13 +411,13 @@ const UI = (() => {
 
             <div id="problem-tab-content">
               <div id="tab-content-description">
-                <p style="white-space:pre-line;margin-top:16px">${problem.description}</p>
+                <p style="white-space:pre-line;margin-top:16px">${formatMarkdown(problem.description)}</p>
 
                 <h3>Input Format</h3>
-                <p style="white-space:pre-line">${problem.inputFormat}</p>
+                <p style="white-space:pre-line">${formatMarkdown(problem.inputFormat)}</p>
 
                 <h3>Output Format</h3>
-                <p style="white-space:pre-line">${problem.outputFormat}</p>
+                <p style="white-space:pre-line">${formatMarkdown(problem.outputFormat)}</p>
 
                 <h3>Constraints</h3>
                 <p><code>${problem.constraints}</code></p>
@@ -430,7 +430,7 @@ const UI = (() => {
               </div>
 
               <div id="tab-content-editorial" style="display:none">
-                <div style="margin-top:16px;white-space:pre-line;line-height:1.8">${formatEditorial(problem.editorial)}</div>
+                <div style="margin-top:16px;white-space:pre-line;line-height:1.8">${formatMarkdown(problem.editorial)}</div>
               </div>
 
               <div id="tab-content-submissions" style="display:none">
@@ -492,7 +492,7 @@ const UI = (() => {
     `;
   }
 
-  function formatEditorial(text) {
+  function formatMarkdown(text) {
     // Simple markdown-ish formatting for code blocks
     return text
       .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
