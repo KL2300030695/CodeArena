@@ -600,7 +600,7 @@ const UI = (() => {
               <span>${user.username}</span>
             </div>
           </td>
-          <td><strong>${user.solved}</strong></td>
+          <td><strong>${user.solvedCount}</strong></td>
           <td>${user.totalSubmissions}</td>
           <td>${user.acceptanceRate}%</td>
         </tr>

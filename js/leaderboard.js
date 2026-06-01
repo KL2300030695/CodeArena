@@ -6,12 +6,22 @@ const Leaderboard = (() => {
       
       try {
         const snap = await getDocs(collection(db, "users"));
-        const users = snap.docs.map(doc => doc.data());
+        const users = snap.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
+        
+        // Fetch all submissions to calculate totalSubmissions and acceptanceRate
+        const subsSnap = await getDocs(collection(db, "submissions"));
+        const subs = subsSnap.docs.map(doc => doc.data());
+
+        users.forEach(u => {
+          const uSubs = subs.filter(s => s.uid === u.uid);
+          u.totalSubmissions = uSubs.length;
+          const accepted = uSubs.filter(s => s.status === 'Accepted').length;
+          u.acceptanceRate = u.totalSubmissions > 0 ? Math.round((accepted / u.totalSubmissions) * 100) : 0;
+          u.solvedCount = u.solved ? u.solved.length : 0;
+        });
         
         users.sort((a, b) => {
-          const aSolved = a.solved ? a.solved.length : 0;
-          const bSolved = b.solved ? b.solved.length : 0;
-          if (bSolved !== aSolved) return bSolved - aSolved;
+          if (b.solvedCount !== a.solvedCount) return b.solvedCount - a.solvedCount;
           return new Date(a.joinDate) - new Date(b.joinDate);
         });
         
