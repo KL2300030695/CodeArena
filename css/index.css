@@ -648,6 +648,11 @@ select.input {
   padding-right: 32px;
 }
 
+select option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 /* ── Tabs ── */
 .tabs {
   display: flex;
