@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TCS NQT 2026 Coding Platform — Practice 20 curated coding problems with live code execution, submissions tracking, and leaderboards.">
+  <meta name="keywords" content="TCS NQT, coding, competitive programming, practice, DSA, DP, Greedy, Graphs">
+  <meta name="author" content="TCS NQT Coding Platform">
+  <title>TCS NQT 2026 — Coding Platform</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟨/⟩</text></svg>">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/index.css">
+
+  <!-- Preconnect to CDN -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    /* Initial loading state */
+    .initial-loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 24px;
+      animation: fadeIn 0.5s ease;
+    }
+    .initial-loader .loader-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+    }
+    .initial-loader .loader-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: white;
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+    }
+    .initial-loader .loader-bar {
+      width: 200px;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .initial-loader .loader-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #06b6d4);
+      border-radius: 999px;
+      animation: loadProgress 2s ease-in-out;
+    }
+    @keyframes loadProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Initial loading state shown before JS loads -->
+    <div class="initial-loader">
+      <div class="loader-brand">
+        <div class="loader-icon">⟨/⟩</div>
+        <span class="text-gradient">TCS NQT</span>
+      </div>
+      <div class="loader-bar">
+        <div class="loader-fill"></div>
+      </div>
+      <p style="color: #94a3b8; font-size: 0.9rem;">Loading platform...</p>
+    </div>
+  </div>
+
+  <!-- Application Scripts (order matters) -->
+  <script src="js/problems.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/executor.js"></script>
+  <script src="js/submissions.js"></script>
+  <script src="js/leaderboard.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
