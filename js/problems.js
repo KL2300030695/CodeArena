@@ -56,7 +56,9 @@ print(f"{amount - amount * discount:.2f}")
 \`\`\``,
     boilerplate: {
       python: `amount = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const amount = parseInt(lines[0]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const amount = parseInt(lines[0]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int amount;\n    scanf("%d", &amount);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int amount = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -118,7 +120,9 @@ print(dp[N][end])
 \`\`\``,
     boilerplate: {
       python: `N, R, end = map(int, input().split())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, R, end] = lines[0].split(' ').map(Number);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, R, end] = lines[0].split(' ').map(Number);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int N, R, end;\n    scanf("%d %d %d", &N, &R, &end);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int N = sc.nextInt(), R = sc.nextInt(), end = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -165,7 +169,9 @@ else:
 \`\`\``,
     boilerplate: {
       python: `hours = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const hours = parseInt(lines[0]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const hours = parseInt(lines[0]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int hours;\n    scanf("%d", &hours);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int hours = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -213,7 +219,9 @@ print(best)
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\narr = list(map(int, input().split()))\nmaxSum = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const arr = lines[1].split(' ').map(Number);\n  const maxSum = parseInt(lines[2]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const arr = lines[1].split(' ').map(Number);\n  const maxSum = parseInt(lines[2]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int n, maxSum;\n    scanf("%d", &n);\n    int arr[n];\n    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);\n    scanf("%d", &maxSum);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        int maxSum = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -264,7 +272,9 @@ print(dp[N][end])
 \`\`\``,
     boilerplate: {
       python: `N, R, end = map(int, input().split())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, R, end] = lines[0].split(' ').map(Number);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, R, end] = lines[0].split(' ').map(Number);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int N, R, end;\n    scanf("%d %d %d", &N, &R, &end);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int N = sc.nextInt(), R = sc.nextInt(), end = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -314,7 +324,9 @@ print(plans.get(n, "Error"))
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -361,7 +373,9 @@ print(count)
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\nweights = list(map(int, input().split()))\nmaxWeight = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const weights = lines[1].split(' ').map(Number);\n  const maxWeight = parseInt(lines[2]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const weights = lines[1].split(' ').map(Number);\n  const maxWeight = parseInt(lines[2]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int n, maxWeight;\n    scanf("%d", &n);\n    int weights[n];\n    for (int i = 0; i < n; i++) scanf("%d", &weights[i]);\n    scanf("%d", &maxWeight);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] weights = new int[n];\n        for (int i = 0; i < n; i++) weights[i] = sc.nextInt();\n        int maxWeight = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -420,7 +434,9 @@ print(f"Minimum Cost: {cost}")
 \`\`\``,
     boilerplate: {
       python: `V, E = map(int, input().split())\nedges = []\nfor _ in range(E):\n    u, v, w = map(int, input().split())\n    edges.append((w, u, v))\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [V, E] = lines[0].split(' ').map(Number);\n  const edges = [];\n  for (let i = 1; i <= E; i++) {\n    const [u, v, w] = lines[i].split(' ').map(Number);\n    edges.push([w, u, v]);\n  }\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [V, E] = lines[0].split(' ').map(Number);\n  const edges = [];\n  for (let i = 1; i <= E; i++) {\n    const [u, v, w] = lines[i].split(' ').map(Number);\n    edges.push([w, u, v]);\n  }\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int V, E;\n    scanf("%d %d", &V, &E);\n    int edges[E][3];\n    for (int i = 0; i < E; i++) {\n        scanf("%d %d %d", &edges[i][0], &edges[i][1], &edges[i][2]);\n    }\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int V = sc.nextInt(), E = sc.nextInt();\n        int[][] edges = new int[E][3];\n        for (int i = 0; i < E; i++) {\n            edges[i][0] = sc.nextInt();\n            edges[i][1] = sc.nextInt();\n            edges[i][2] = sc.nextInt();\n        }\n        // Your code here\n    }\n}`
     }
   },
 
@@ -498,7 +514,9 @@ else:
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\narr = list(map(int, input().split()))\nx = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const arr = lines[1].split(' ').map(Number);\n  const x = parseInt(lines[2]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const arr = lines[1].split(' ').map(Number);\n  const x = parseInt(lines[2]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int n, x;\n    scanf("%d", &n);\n    int arr[n];\n    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);\n    scanf("%d", &x);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        int x = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -540,7 +558,9 @@ print(count)
 \`\`\``,
     boilerplate: {
       python: `amount = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const amount = parseInt(lines[0]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const amount = parseInt(lines[0]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int amount;\n    scanf("%d", &amount);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int amount = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -588,11 +608,11 @@ else:
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\narr = list(map(int, input().split()))\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const arr = lines[1].split(' ').map(Number);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const arr = lines[1].split(' ').map(Number);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    int arr[n];\n    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        // Your code here\n    }\n}`
     }
-  },
-
-  // ── Q12: Minimum Path Sum ──
+  },      // ── Q12: Minimum Path Sum ──
   {
     id: 12,
     title: "Minimum Path Sum in Matrix",
@@ -637,7 +657,9 @@ print(dp[N-1][M-1])
 \`\`\``,
     boilerplate: {
       python: `N, M = map(int, input().split())\ngrid = []\nfor _ in range(N):\n    grid.append(list(map(int, input().split())))\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, M] = lines[0].split(' ').map(Number);\n  const grid = [];\n  for (let i = 1; i <= N; i++) grid.push(lines[i].split(' ').map(Number));\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, M] = lines[0].split(' ').map(Number);\n  const grid = [];\n  for (let i = 1; i <= N; i++) grid.push(lines[i].split(' ').map(Number));\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int N, M;\n    scanf("%d %d", &N, &M);\n    int grid[N][M];\n    for (int i = 0; i < N; i++) {\n        for (int j = 0; j < M; j++) {\n            scanf("%d", &grid[i][j]);\n        }\n    }\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int N = sc.nextInt(), M = sc.nextInt();\n        int[][] grid = new int[N][M];\n        for (int i = 0; i < N; i++) {\n            for (int j = 0; j < M; j++) {\n                grid[i][j] = sc.nextInt();\n            }\n        }\n        // Your code here\n    }\n}`
     }
   },
 
@@ -691,7 +713,9 @@ print(count)
 \`\`\``,
     boilerplate: {
       python: `N, M = map(int, input().split())\ngrid = []\nfor _ in range(N):\n    grid.append(list(map(int, input().split())))\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, M] = lines[0].split(' ').map(Number);\n  const grid = [];\n  for (let i = 1; i <= N; i++) grid.push(lines[i].split(' ').map(Number));\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const [N, M] = lines[0].split(' ').map(Number);\n  const grid = [];\n  for (let i = 1; i <= N; i++) grid.push(lines[i].split(' ').map(Number));\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int N, M;\n    scanf("%d %d", &N, &M);\n    int grid[N][M];\n    for (int i = 0; i < N; i++) {\n        for (int j = 0; j < M; j++) {\n            scanf("%d", &grid[i][j]);\n        }\n    }\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int N = sc.nextInt(), M = sc.nextInt();\n        int[][] grid = new int[N][M];\n        for (int i = 0; i < N; i++) {\n            for (int j = 0; j < M; j++) {\n                grid[i][j] = sc.nextInt();\n            }\n        }\n        // Your code here\n    }\n}`
     }
   },
 
@@ -765,7 +789,9 @@ else:
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\ntxns = []\nfor _ in range(n):\n    parts = input().split()\n    txns.append(parts)\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const txns = [];\n  for (let i = 1; i <= n; i++) txns.push(lines[i].split(' '));\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const txns = [];\n  for (let i = 1; i <= n; i++) txns.push(lines[i].split(' '));\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n#include <string.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    char sender[n][100], receiver[n][100];\n    int timestamp[n], amount[n];\n    for (int i = 0; i < n; i++) {\n        scanf("%s %s %d %d", sender[i], receiver[i], &timestamp[i], &amount[i]);\n    }\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        String[][] txns = new String[n][4];\n        for (int i = 0; i < n; i++) {\n            txns[i][0] = sc.next();\n            txns[i][1] = sc.next();\n            txns[i][2] = sc.next();\n            txns[i][3] = sc.next();\n        }\n        // Your code here\n    }\n}`
     }
   },
 
@@ -830,7 +856,9 @@ print(f"Checked: {checked}")
 \`\`\``,
     boilerplate: {
       python: `n = int(input())\nregistered = set(input().split())\nm = int(input())\n# Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const registered = new Set(lines[1].split(' '));\n  const m = parseInt(lines[2]);\n  // Your code here\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  const n = parseInt(lines[0]);\n  const registered = new Set(lines[1].split(' '));\n  const m = parseInt(lines[2]);\n  // Your code here\n});`,
+      c: `#include <stdio.h>\n#include <string.h>\n\nint main() {\n    int n, m;\n    scanf("%d", &n);\n    char registered[n][100];\n    for (int i = 0; i < n; i++) scanf("%s", registered[i]);\n    scanf("%d", &m);\n    // Your code here\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        String[] registered = new String[n];\n        for (int i = 0; i < n; i++) registered[i] = sc.next();\n        int m = sc.nextInt();\n        // Your code here\n    }\n}`
     }
   },
 
@@ -872,7 +900,9 @@ for _ in range(T):
 \`\`\``,
     boilerplate: {
       python: `T = int(input())\nfor _ in range(T):\n    n = int(input())\n    arr = list(map(int, input().split()))\n    # Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const n = parseInt(lines[idx++]);\n    const arr = lines[idx++].split(' ').map(Number);\n    // Your code here\n  }\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const n = parseInt(lines[idx++]);\n    const arr = lines[idx++].split(' ').map(Number);\n    // Your code here\n  }\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int T;\n    scanf("%d", &T);\n    while (T--) {\n        int n;\n        scanf("%d", &n);\n        int arr[n];\n        for (int i = 0; i < n; i++) scanf("%d", &arr[i]);\n        // Your code here\n    }\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int T = sc.nextInt();\n        while (T-- > 0) {\n            int n = sc.nextInt();\n            int[] arr = new int[n];\n            for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n            // Your code here\n        }\n    }\n}`
     }
   },
 
@@ -914,7 +944,9 @@ for _ in range(T):
 \`\`\``,
     boilerplate: {
       python: `T = int(input())\nfor _ in range(T):\n    n, m = map(int, input().split())\n    # Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const [n, m] = lines[idx++].split(' ').map(Number);\n    // Your code here\n  }\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const [n, m] = lines[idx++].split(' ').map(Number);\n    // Your code here\n  }\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int T;\n    scanf("%d", &T);\n    while (T--) {\n        int n, m;\n        scanf("%d %d", &n, &m);\n        // Your code here\n    }\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int T = sc.nextInt();\n        while (T-- > 0) {\n            int n = sc.nextInt(), m = sc.nextInt();\n            // Your code here\n        }\n    }\n}`
     }
   },
 
@@ -952,7 +984,9 @@ for _ in range(T):
 \`\`\``,
     boilerplate: {
       python: `T = int(input())\nfor _ in range(T):\n    str1 = input()\n    str2 = input()\n    # Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const str1 = lines[idx++];\n    const str2 = lines[idx++];\n    // Your code here\n  }\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const str1 = lines[idx++];\n    const str2 = lines[idx++];\n    // Your code here\n  }\n});`,
+      c: `#include <stdio.h>\n#include <string.h>\n\nint main() {\n    int T;\n    scanf("%d", &T);\n    while (T--) {\n        char str1[100001], str2[100001];\n        scanf("%s %s", str1, str2);\n        // Your code here\n    }\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int T = sc.nextInt();\n        while (T-- > 0) {\n            String str1 = sc.next();\n            String str2 = sc.next();\n            // Your code here\n        }\n    }\n}`
     }
   },
 
@@ -989,7 +1023,9 @@ for _ in range(T):
 \`\`\``,
     boilerplate: {
       python: `T = int(input())\nfor _ in range(T):\n    n = int(input())\n    # Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const n = parseInt(lines[idx++]);\n    // Your code here\n  }\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const T = parseInt(lines[idx++]);\n  for (let t = 0; t < T; t++) {\n    const n = parseInt(lines[idx++]);\n    // Your code here\n  }\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int T;\n    scanf("%d", &T);\n    while (T--) {\n        int n;\n        scanf("%d", &n);\n        // Your code here\n    }\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int T = sc.nextInt();\n        while (T-- > 0) {\n            int n = sc.nextInt();\n            // Your code here\n        }\n    }\n}`
     }
   },
 
@@ -1043,7 +1079,9 @@ for _ in range(tc):
 \`\`\``,
     boilerplate: {
       python: `tc = int(input())\nfor _ in range(tc):\n    v = int(input())\n    w = int(input())\n    # Your code here\n`,
-      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const tc = parseInt(lines[idx++]);\n  for (let t = 0; t < tc; t++) {\n    const v = parseInt(lines[idx++]);\n    const w = parseInt(lines[idx++]);\n    // Your code here\n  }\n});`
+      javascript: `const input = require('readline').createInterface({input: process.stdin});\nlet lines = [];\ninput.on('line', l => lines.push(l));\ninput.on('close', () => {\n  let idx = 0;\n  const tc = parseInt(lines[idx++]);\n  for (let t = 0; t < tc; t++) {\n    const v = parseInt(lines[idx++]);\n    const w = parseInt(lines[idx++]);\n    // Your code here\n  }\n});`,
+      c: `#include <stdio.h>\n\nint main() {\n    int tc;\n    scanf("%d", &tc);\n    while (tc--) {\n        int v, w;\n        scanf("%d %d", &v, &w);\n        // Your code here\n    }\n    return 0;\n}`,
+      java: `import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int tc = sc.nextInt();\n        while (tc-- > 0) {\n            int v = sc.nextInt();\n            int w = sc.nextInt();\n            // Your code here\n        }\n    }\n}`
     }
   }
 ];

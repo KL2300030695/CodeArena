@@ -143,7 +143,7 @@ const UI = (() => {
               <div class="stat-desc">Categories</div>
             </div>
             <div class="hero-quick-stat">
-              <div class="stat-number">2</div>
+              <div class="stat-number">4</div>
               <div class="stat-desc">Languages</div>
             </div>
             <div class="hero-quick-stat">
@@ -440,6 +440,16 @@ const UI = (() => {
               </div>
             </div>
           </div>
+
+          <div class="problem-bottom-nav">
+            <div>
+              ${prevId ? `<button class="btn btn-secondary btn-sm" onclick="location.hash='#/problem/${prevId}'" id="bottom-prev-btn">← Prev</button>` : ''}
+            </div>
+            <span class="text-xs text-muted">${problem.id} / ${PROBLEMS.length}</span>
+            <div>
+              ${nextId ? `<button class="btn btn-primary btn-sm" onclick="location.hash='#/problem/${nextId}'" id="bottom-next-btn">Next →</button>` : ''}
+            </div>
+          </div>
         </div>
 
         <!-- Resizable Divider -->
@@ -452,6 +462,8 @@ const UI = (() => {
               <select class="language-selector" id="language-select" onchange="UI.onLanguageChange(this.value, ${problem.id})">
                 <option value="python">🐍 Python</option>
                 <option value="javascript">🟨 JavaScript</option>
+                <option value="c">🔧 C</option>
+                <option value="java">☕ Java</option>
               </select>
               <span class="text-xs text-muted" id="editor-status">Ready</span>
             </div>
@@ -1010,6 +1022,20 @@ const UI = (() => {
           </div>
         </div>
       `).join('');
+
+      // Add "Next Problem" button on accepted
+      if (result.allPassed && problem.id < PROBLEMS.length) {
+        const nextId = problem.id + 1;
+        const nextProblem = PROBLEMS.find(p => p.id === nextId);
+        resultsBody.innerHTML += `
+          <div class="next-problem-banner">
+            <span>🎉 Great job! Ready for the next challenge?</span>
+            <button class="btn btn-primary btn-sm" onclick="location.hash='#/problem/${nextId}'" id="next-problem-btn">
+              Next: ${nextProblem ? nextProblem.title : 'Problem ' + nextId} →
+            </button>
+          </div>
+        `;
+      }
 
       submitBtn.disabled = false;
       runBtn.disabled = false;

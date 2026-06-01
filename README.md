@@ -14,7 +14,7 @@ A premium, fully client-side coding practice platform built for **TCS NQT 2026**
 
 ### 🧑‍💻 Code Editor
 - **Monaco Editor** (same engine as VS Code) with custom dark theme
-- Syntax highlighting for Python and JavaScript
+- Syntax highlighting for Python, JavaScript, C, and Java
 - Auto-save to localStorage on every keystroke
 - Keyboard shortcuts: `Ctrl+Enter` to run, `Ctrl+S` to submit
 - Resizable split panel — drag the divider between problem description and editor
@@ -22,6 +22,8 @@ A premium, fully client-side coding practice platform built for **TCS NQT 2026**
 ### ⚡ Live Code Execution
 - **Python** — executed in-browser via [Pyodide](https://pyodide.org/) (WebAssembly)
 - **JavaScript** — sandboxed execution with custom `readline` interface support
+- **C** — executed via [Piston API](https://github.com/engineer-man/piston) (remote execution service)
+- **Java** — executed via [Piston API](https://github.com/engineer-man/piston) (remote execution service)
 - 5-second time limit per test case
 - Full stdin/stdout simulation
 
@@ -100,6 +102,7 @@ Each problem includes:
 | **Logic** | Vanilla JavaScript (ES6+ modules via IIFE pattern) |
 | **Code Editor** | [Monaco Editor](https://microsoft.github.io/monaco-editor/) v0.45.0 (CDN) |
 | **Python Runtime** | [Pyodide](https://pyodide.org/) v0.25.1 (WebAssembly, CDN) |
+| **C / Java Execution** | [Piston API](https://github.com/engineer-man/piston) (remote API) |
 | **Fonts** | Google Fonts — Inter, Outfit, JetBrains Mono |
 | **Storage** | localStorage (all data persists in the browser) |
 
@@ -243,7 +246,9 @@ The app follows an **IIFE module pattern** — each JS file exposes a single glo
 3. `require('readline')` pattern is auto-detected and shimmed
 4. Async callbacks get a 100ms grace period
 
-Both languages enforce a **5-second time limit** per test case.
+All four languages enforce a **5-second time limit** per test case.
+
+> **Note:** C and Java execution requires a Piston API server. By default, the platform uses `https://emkc.org/api/v2/piston/execute`. You can configure a custom endpoint by setting `localStorage.setItem('piston_api_url', 'your-url-here')` in the browser console.
 
 ---
 

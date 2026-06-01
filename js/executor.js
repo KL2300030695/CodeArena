@@ -1,6 +1,6 @@
 // ============================================
 // TCS NQT Coding Platform — Code Execution Engine
-// Python (Pyodide/WASM) + JavaScript execution
+// Python (Pyodide/WASM) + JavaScript + C + Java execution
 // ============================================
 
 const Executor = (() => {
@@ -9,6 +9,9 @@ const Executor = (() => {
   let pyodideReady = false;
 
   const TIME_LIMIT = 5000; // 5 seconds
+
+  // Piston API endpoint (configurable)
+  const PISTON_API_URL = localStorage.getItem('piston_api_url') || 'https://emkc.org/api/v2/piston/execute';
 
   async function initPyodideRuntime() {
     if (pyodideReady) return;
@@ -129,7 +132,7 @@ sys.stderr = sys.__stderr__
         let inputIdx = 0;
         let outputLines = [];
 
-        // Create sandbox
+        // Create sandbox (no reserved words as keys — they're global anyway)
         const sandbox = {
           console: {
             log: (...args) => outputLines.push(args.map(String).join(' ')),
@@ -155,12 +158,6 @@ sys.stderr = sys.__stderr__
           Set: Set,
           isNaN: isNaN,
           isFinite: isFinite,
-          undefined: undefined,
-          null: null,
-          true: true,
-          false: false,
-          Infinity: Infinity,
-          NaN: NaN,
         };
 
         // Wrap code to handle require('readline') pattern
@@ -234,6 +231,117 @@ sys.stderr = sys.__stderr__
     });
   }
 
+  /**
+   * Execute C or Java code via Piston API
+   * @param {string} code - Source code
+   * @param {string} language - 'c' or 'java'
+   * @param {string} input - Stdin input
+   */
+  async function runExternal(code, language, input) {
+    const langMap = {
+      c: { language: 'c', file: 'main.c' },
+      java: { language: 'java', file: 'Main.java' }
+    };
+
+    const config = langMap[language];
+    if (!config) {
+      return { success: false, output: '', error: 'Unsupported language', status: 'RE' };
+    }
+
+    try {
+      // First check if the API is reachable (optimistic approach)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TIME_LIMIT + 2000);
+
+      const response = await fetch(PISTON_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          language: config.language,
+          version: '*',
+          files: [{
+            name: config.file,
+            content: code
+          }],
+          stdin: input,
+          run_timeout: Math.floor(TIME_LIMIT / 1000) * 1000,
+          compile_timeout: 10000
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => '');
+        return {
+          success: false,
+          output: '',
+          error: `Execution API error (${response.status}): ${errorText || 'Service unavailable'}`,
+          status: 'RE'
+        };
+      }
+
+      const data = await response.json();
+
+      // Check for compile errors
+      if (data.compile && data.compile.code !== 0) {
+        const error = data.compile.stderr || data.compile.output || 'Compilation error';
+        return {
+          success: false,
+          output: '',
+          error: error.substring(0, 500),
+          status: 'CE'
+        };
+      }
+
+      // Check for run errors
+      if (data.run && data.run.code !== 0 && data.run.signal !== 'SIGTERM') {
+        const error = data.run.stderr || data.run.output || 'Runtime error';
+        return {
+          success: false,
+          output: '',
+          error: error.substring(0, 500),
+          status: 'RE'
+        };
+      }
+
+      // SIGTERM signal indicates timeout
+      if (data.run && data.run.signal === 'SIGTERM') {
+        return {
+          success: false,
+          output: '',
+          error: 'Time Limit Exceeded',
+          status: 'TLE'
+        };
+      }
+
+      const output = (data.run ? data.run.stdout || '' : '').trim();
+      return {
+        success: true,
+        output,
+        error: '',
+        status: 'OK'
+      };
+
+    } catch (e) {
+      if (e.name === 'AbortError') {
+        return {
+          success: false,
+          output: '',
+          error: 'Time Limit Exceeded (request aborted)',
+          status: 'TLE'
+        };
+      }
+      return {
+        success: false,
+        output: '',
+        error: `Execution service error: ${e.message || 'Connection failed'}. Make sure the Piston API is running.`,
+        status: 'RE'
+      };
+    }
+  }
+
   return {
     // Run code against a single test case
     async runSingle(code, language, input) {
@@ -241,6 +349,8 @@ sys.stderr = sys.__stderr__
         return await runPython(code, input);
       } else if (language === 'javascript') {
         return await runJavaScript(code, input);
+      } else if (language === 'c' || language === 'java') {
+        return await runExternal(code, language, input);
       }
       return { success: false, output: '', error: 'Unsupported language', status: 'RE' };
     },

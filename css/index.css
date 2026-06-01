@@ -851,6 +851,39 @@ select.input {
   margin-bottom: var(--space-xs);
 }
 
+/* ── Problem Bottom Navigation ── */
+.problem-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-lg);
+  background: rgba(10, 14, 26, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border-primary);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* ── Next Problem Banner (after accepted submission) ── */
+.next-problem-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+  border-top: 1px solid rgba(16, 185, 129, 0.2);
+  animation: fadeInUp var(--transition-slow) ease-out;
+}
+
+.next-problem-banner span {
+  font-size: 0.9rem;
+  color: var(--color-success);
+  font-weight: 500;
+}
+
 /* ── Editor Area ── */
 .editor-toolbar {
   display: flex;
