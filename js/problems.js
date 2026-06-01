@@ -1088,17 +1088,17 @@ for _ in range(tc):
 
 // Category definitions for filtering
 const CATEGORIES = [
-  { name: "All", icon: "📋", count: 20 },
-  { name: "Conditional Logic", icon: "🔀", problems: [1, 3, 6] },
-  { name: "Dynamic Programming", icon: "📊", problems: [2, 4, 5, 11, 12] },
-  { name: "Greedy", icon: "🎯", problems: [7, 10] },
-  { name: "Graphs", icon: "🕸️", problems: [8, 13] },
-  { name: "Binary Search", icon: "🔍", problems: [9] },
-  { name: "Simulation", icon: "⚙️", problems: [14, 15] },
-  { name: "Arrays", icon: "📦", problems: [16, 17] },
-  { name: "Strings", icon: "🔤", problems: [18] },
-  { name: "Number Theory", icon: "🔢", problems: [19] },
-  { name: "Math", icon: "➗", problems: [20] }
+  { name: "All", icon: "", count: 20 },
+  { name: "Conditional Logic", icon: "", problems: [1, 3, 6] },
+  { name: "Dynamic Programming", icon: "", problems: [2, 4, 5, 11, 12] },
+  { name: "Greedy", icon: "", problems: [7, 10] },
+  { name: "Graphs", icon: "", problems: [8, 13] },
+  { name: "Binary Search", icon: "", problems: [9] },
+  { name: "Simulation", icon: "", problems: [14, 15] },
+  { name: "Arrays", icon: "", problems: [16, 17] },
+  { name: "Strings", icon: "", problems: [18] },
+  { name: "Number Theory", icon: "", problems: [19] },
+  { name: "Math", icon: "", problems: [20] }
 ];
 
 // Export for use in other modules

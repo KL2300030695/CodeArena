@@ -125,7 +125,7 @@ const UI = (() => {
           </p>
           <div class="hero-actions">
             <button class="btn btn-primary btn-lg" onclick="location.hash='#/problems'" id="start-practice-btn">
-              🚀 Start Practicing
+              Start Practicing
             </button>
             ${!session ? `
               <button class="btn btn-secondary btn-lg" onclick="location.hash='#/login'" id="hero-signin-btn">
@@ -210,22 +210,22 @@ const UI = (() => {
 
           <div class="stats-grid stagger-children">
             <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(99,102,241,0.12)">📊</div>
+              <div class="stat-icon" style="background:rgba(99,102,241,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
               <div class="stat-value">${stats.solved}/${stats.total}</div>
               <div class="stat-label">Problems Solved</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(16,185,129,0.12)">🎯</div>
+              <div class="stat-icon" style="background:rgba(16,185,129,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
               <div class="stat-value">${solvedPercent}%</div>
               <div class="stat-label">Completion Rate</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(245,158,11,0.12)">⚡</div>
+              <div class="stat-icon" style="background:rgba(245,158,11,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
               <div class="stat-value">${stats.attempted}</div>
               <div class="stat-label">In Progress</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(6,182,212,0.12)">🏆</div>
+              <div class="stat-icon" style="background:rgba(6,182,212,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg></div>
               <div class="stat-value">${Leaderboard.getUserRank(session.username) || '-'}</div>
               <div class="stat-label">Your Rank</div>
             </div>
@@ -313,9 +313,9 @@ const UI = (() => {
           <select class="input" style="width:auto" id="filter-difficulty"
                   onchange="location.hash='#/problems?category=${filterCategory}&difficulty='+this.value">
             <option value="All" ${filterDifficulty === 'All' ? 'selected' : ''}>All Difficulties</option>
-            <option value="Easy" ${filterDifficulty === 'Easy' ? 'selected' : ''}>🟢 Easy</option>
-            <option value="Medium" ${filterDifficulty === 'Medium' ? 'selected' : ''}>🟡 Medium</option>
-            <option value="Hard" ${filterDifficulty === 'Hard' ? 'selected' : ''}>🔴 Hard</option>
+            <option value="Easy" ${filterDifficulty === 'Easy' ? 'selected' : ''}>Easy</option>
+            <option value="Medium" ${filterDifficulty === 'Medium' ? 'selected' : ''}>Medium</option>
+            <option value="Hard" ${filterDifficulty === 'Hard' ? 'selected' : ''}>Hard</option>
           </select>
         </div>
 
@@ -369,7 +369,7 @@ const UI = (() => {
     const hintsHtml = problem.hints.map((hint, i) => `
       <div class="hint-block">
         <div class="hint-toggle" onclick="this.nextElementSibling.classList.toggle('show')">
-          <span>💡 Hint ${i + 1}</span>
+          <span>Hint ${i + 1}</span>
           <span>▼</span>
         </div>
         <div class="hint-content">${formatMarkdown(hint)}</div>
@@ -460,10 +460,10 @@ const UI = (() => {
           <div class="editor-toolbar">
             <div class="editor-toolbar-left">
               <select class="language-selector" id="language-select" onchange="UI.onLanguageChange(this.value, ${problem.id})">
-                <option value="python">🐍 Python</option>
-                <option value="javascript">🟨 JavaScript</option>
-                <option value="c">🔧 C</option>
-                <option value="java">☕ Java</option>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="c">C</option>
+                <option value="java">Java</option>
               </select>
               <span class="text-xs text-muted" id="editor-status">Ready</span>
             </div>
@@ -611,7 +611,7 @@ const UI = (() => {
       ${renderNavbar()}
       <div class="page-container animate-fade-in">
         <div class="page-header">
-          <h1>🏆 Leaderboard</h1>
+          <h1>Leaderboard</h1>
           <p class="page-subtitle">Top coders on the platform</p>
         </div>
 
@@ -729,7 +729,7 @@ const UI = (() => {
           <div class="profile-info">
             <h2>${session.username}</h2>
             <div class="profile-email">${session.email}</div>
-            <div class="profile-date">🗓 Joined ${joinDate}</div>
+            <div class="profile-date">Joined ${joinDate}</div>
           </div>
         </div>
 
