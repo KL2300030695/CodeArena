@@ -328,6 +328,7 @@ const UI = (() => {
     const params = new URLSearchParams(location.hash.split('?')[1] || '');
     const filterCategory = params.get('category') || 'All';
     const filterDifficulty = params.get('difficulty') || 'All';
+    const session = Auth.getSession();
 
     let filtered = [...PROBLEMS];
     if (filterCategory !== 'All') {
@@ -342,13 +343,13 @@ const UI = (() => {
 
     const rows = filtered.map(p => {
       const status = Auth.getProblemStatus(p.id);
-      const statusIcon = status === 'solved' ? '<div class="problem-status-icon solved">✓</div>' :
+      const statusIcon = session ? (status === 'solved' ? '<div class="problem-status-icon solved">✓</div>' :
                          status === 'attempted' ? '<div class="problem-status-icon attempted">◐</div>' :
-                         '<div class="problem-status-icon unsolved">○</div>';
+                         '<div class="problem-status-icon unsolved">○</div>') : '<div class="problem-status-icon locked" style="color:var(--text-muted)">🔒</div>';
       const diffClass = p.difficulty.toLowerCase();
 
       return `
-        <tr onclick="location.hash='#/problem/${p.id}'" id="problem-row-${p.id}">
+        <tr ${session ? `onclick="location.hash='#/problem/${p.id}'" style="cursor:pointer"` : `onclick="UI.showToast('Please sign in to view this problem', 'error')" style="cursor:not-allowed"`} id="problem-row-${p.id}">
           <td>${statusIcon}</td>
           <td>
             <div class="problem-title-cell">
@@ -419,6 +420,11 @@ const UI = (() => {
 
   // ── Problem Detail Page ──
   async function renderProblemDetail(id) {
+    const session = Auth.getSession();
+    if (!session) {
+      return `${renderNavbar()}<div class="page-container"><div class="empty-state"><div class="empty-icon">🔒</div><h3>Sign in to view problem</h3><p class="text-muted">You must be logged in to view and solve problems.</p><button class="btn btn-primary mt-lg" onclick="location.hash='#/login'">Sign In</button></div></div>`;
+    }
+
     const problem = PROBLEMS.find(p => p.id === parseInt(id));
     if (!problem) {
       return `${renderNavbar()}<div class="page-container"><div class="empty-state"><div class="empty-icon">❌</div><h3>Problem not found</h3></div></div>`;
