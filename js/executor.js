@@ -11,7 +11,7 @@ const Executor = (() => {
   const TIME_LIMIT = 5000; // 5 seconds
 
   // Piston API endpoint (configurable)
-  const PISTON_API_URL = localStorage.getItem('piston_api_url') || 'https://emkc.org/api/v2/piston/execute';
+  const PISTON_API_URL = localStorage.getItem('piston_api_url') || 'http://localhost:3000/api/execute';
 
   async function initPyodideRuntime() {
     if (pyodideReady) return;

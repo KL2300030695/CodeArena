@@ -866,9 +866,14 @@ const UI = (() => {
       try {
         const result = await window.FirebaseSignInWithPopup(window.FirebaseAuth, window.FirebaseProvider);
         
-        // Auth.js automatically handles the profile creation via onAuthStateChanged.
-        // We just need to wait for it to be ready.
-        const user = await Auth.fetchCurrentUser();
+        // Wait for Auth.js to automatically handle the profile creation via onAuthStateChanged.
+        let retries = 20;
+        while (!Auth.getCurrentUser() && retries > 0) {
+          await new Promise(r => setTimeout(r, 250));
+          retries--;
+        }
+        
+        const user = Auth.getCurrentUser();
         
         if (user) {
           showToast('Welcome, ' + user.username + '!', 'success');
