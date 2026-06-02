@@ -35,23 +35,24 @@ const UI = (() => {
     const currentHash = location.hash || '#/';
 
     const navLinks = [
-      { href: '#/', label: 'Dashboard', icon: '🏠' },
-      { href: '#/problems', label: 'Problems', icon: '📝' },
-      { href: '#/submissions', label: 'Submissions', icon: '📊' },
-      { href: '#/leaderboard', label: 'Leaderboard', icon: '🏆' },
+      { href: '#/problems', label: 'Problems' },
+      { href: '#', label: 'Contests' },
+      { href: '#/leaderboard', label: 'Leaderboard' },
+      { href: '#/profile', label: 'Profile' },
+      { href: '#', label: 'Pricing' },
     ];
 
     return `
       <nav class="navbar" id="main-navbar">
         <div class="navbar-brand" onclick="location.hash='#/'">
           <div class="brand-icon">⟨/⟩</div>
-          <span class="text-gradient">TCS NQT</span>
+          <span class="text-gradient" style="font-size:1.4rem;">CodeArena</span>
         </div>
         <ul class="navbar-nav">
           ${navLinks.map(link => `
             <li>
               <span class="nav-link ${currentHash === link.href ? 'active' : ''}"
-                    onclick="location.hash='${link.href}'" id="nav-${link.label.toLowerCase()}">
+                    onclick="location.hash='${link.href}'">
                 ${link.label}
               </span>
             </li>
@@ -63,15 +64,13 @@ const UI = (() => {
               <div class="avatar avatar-sm" style="background:${session.avatarColor}">
                 ${session.username[0].toUpperCase()}
               </div>
-              <span class="text-sm">${session.username}</span>
             </div>
             <button class="btn btn-ghost btn-sm" onclick="Auth.logout(); location.hash='#/'; App.render();" id="logout-btn">
               Logout
             </button>
           ` : `
-            <button class="btn btn-primary btn-sm" onclick="location.hash='#/login'" id="login-btn">
-              Sign In
-            </button>
+            <button class="btn btn-ghost btn-sm" onclick="location.hash='#/login'">Sign In</button>
+            <button class="btn btn-primary btn-sm" style="border-radius:20px; padding:6px 20px" onclick="location.hash='#/login'">Register</button>
           `}
         </div>
         <button class="mobile-menu-btn" onclick="UI.toggleMobileMenu()">☰</button>
@@ -82,167 +81,245 @@ const UI = (() => {
   // ── Dashboard / Landing Page ──
   async function renderDashboard() {
     const session = Auth.getSession();
-    const stats = Auth.getStats();
+    
+    // New pill categories
+    const pillCategories = [
+      { name: 'DSA', icon: '🗄️', color: 'blue' },
+      { name: 'Graphs', icon: '🕸️', color: 'green' },
+      { name: 'Dynamic Programming', icon: '📈', color: 'purple' },
+      { name: 'Trees', icon: '🌲', color: 'cyan' },
+      { name: 'SQL', icon: '🗃️', color: 'blue' }
+    ];
 
-    const categoryCards = CATEGORIES.filter(c => c.name !== 'All').map(cat => {
-      const total = cat.problems ? cat.problems.length : 0;
-      const solved = cat.problems ? cat.problems.filter(id => stats.solvedIds && stats.solvedIds.includes(id)).length : 0;
-      const progress = total > 0 ? (solved / total) * 100 : 0;
+    const categoryPills = pillCategories.map(cat => `
+      <div class="pill-card" onclick="location.hash='#/problems?category=${encodeURIComponent(cat.name)}'">
+        <div class="pill-icon">${cat.icon}</div>
+        <div style="font-weight:600; font-size:0.85rem">${cat.name}</div>
+        <div class="badge badge-tag">Difficulty</div>
+      </div>
+    `).join('');
 
-      return `
-        <div class="category-card" onclick="location.hash='#/problems?category=${encodeURIComponent(cat.name)}'">
-          <div class="category-icon">${cat.icon}</div>
-          <div class="category-name">${cat.name}</div>
-          <div class="category-count">${total} problem${total !== 1 ? 's' : ''}</div>
-          <div class="category-progress">
-            <div class="category-progress-fill" style="width:${progress}%"></div>
+    let sidebarContent = '';
+    
+    if (session) {
+      // Fetch mock top 3 leaderboard
+      const rankings = await Leaderboard.getRankings();
+      const top3 = rankings.slice(0,3);
+      
+      let podiumHTML = '';
+      if(top3.length > 0) {
+        // Reorder for podium: [Rank 2, Rank 1, Rank 3]
+        const displayOrder = [];
+        if(top3[1]) displayOrder.push({user: top3[1], rank: 2, cls: 'rank-2'});
+        if(top3[0]) displayOrder.push({user: top3[0], rank: 1, cls: 'rank-1'});
+        if(top3[2]) displayOrder.push({user: top3[2], rank: 3, cls: 'rank-3'});
+
+        podiumHTML = displayOrder.map(item => `
+          <div class="podium-card ${item.cls}">
+            <div class="podium-rank">${item.rank}</div>
+            <div class="podium-avatar" style="background:${item.user.avatarColor}">${item.user.username[0].toUpperCase()}</div>
+            <div class="podium-name">${item.user.username}</div>
+            <div class="podium-stats">
+              <div><strong>${item.user.solvedCount}</strong><span>Solved</span></div>
+            </div>
           </div>
-          <div class="text-xs text-muted mt-md">${solved}/${total} solved</div>
+        `).join('');
+      }
+
+      // Generate random heatmap cells
+      let heatmapHTML = '';
+      for(let i=0; i<100; i++) {
+        const rand = Math.random();
+        let cls = '';
+        if(rand > 0.9) cls = 'level-3';
+        else if(rand > 0.7) cls = 'level-2';
+        else if(rand > 0.5) cls = 'level-1';
+        heatmapHTML += `<div class="heatmap-cell ${cls}"></div>`;
+      }
+
+      sidebarContent = `
+        <div class="sidebar-content animate-slide-in-right">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 style="font-size:1.1rem">Global Leaderboard</h3>
+              <a href="#/leaderboard" style="font-size:0.8rem; background:rgba(255,255,255,0.05); padding:2px 8px; border-radius:4px; color:white;">❯</a>
+            </div>
+            <div class="podium-container">
+              ${podiumHTML}
+            </div>
+          </div>
+
+          <div style="margin-top:var(--space-xl)">
+            <h3 style="font-size:1.1rem; margin-bottom:12px;">Your Profile Highlights</h3>
+            <div class="profile-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem">
+                <span>Streak Heatmap</span>
+                <span class="text-accent">14 days 🔥</span>
+              </div>
+              <div class="heatmap-grid">
+                ${heatmapHTML}
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:16px;">
+                Solved Problems: <strong style="color:white; font-size:1.1rem;">30</strong>
+              </div>
+              
+              <div style="display:flex; gap:16px;">
+                <div style="flex:1">
+                  <div style="font-size:0.8rem; margin-bottom:8px;">Badges</div>
+                  <div class="badges-row">
+                    <div class="badge-hexagon" style="color:#fbbf24">🏆</div>
+                    <div class="badge-hexagon" style="color:#60a5fa">⚔️</div>
+                    <div class="badge-hexagon" style="color:#c084fc">DP</div>
+                  </div>
+                </div>
+                <div style="flex:1">
+                  <div style="font-size:0.8rem; margin-bottom:8px;">Rating</div>
+                  <div style="height:40px; background:linear-gradient(to top, rgba(99,102,241,0.1), transparent); border-bottom:2px solid var(--accent-secondary); border-radius:4px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       `;
-    }).join('');
-
-    const solvedPercent = stats.total > 0 ? Math.round((stats.solved / stats.total) * 100) : 0;
-    const circumference = 2 * Math.PI * 54;
-    const offset = circumference - (solvedPercent / 100) * circumference;
-
-    // Difficulty breakdown
-    const easyProblems = PROBLEMS.filter(p => p.difficulty === 'Easy');
-    const mediumProblems = PROBLEMS.filter(p => p.difficulty === 'Medium');
-    const hardProblems = PROBLEMS.filter(p => p.difficulty === 'Hard');
-    const easySolved = easyProblems.filter(p => stats.solvedIds && stats.solvedIds.includes(p.id)).length;
-    const mediumSolved = mediumProblems.filter(p => stats.solvedIds && stats.solvedIds.includes(p.id)).length;
-    const hardSolved = hardProblems.filter(p => stats.solvedIds && stats.solvedIds.includes(p.id)).length;
+    } else {
+      sidebarContent = `
+        <div class="sidebar-content animate-slide-in-right">
+          <div class="card-glass" style="padding: 24px; text-align: center; margin-top: 40px;">
+            <h3 style="margin-bottom: 12px;">Join CodeArena</h3>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+              Create an account to track your progress, compete in contests, and climb the leaderboard.
+            </p>
+            <button class="btn btn-primary" style="width: 100%; border-radius: 20px;" onclick="location.hash='#/login'">Sign Up Now</button>
+          </div>
+        </div>
+      `;
+    }
 
     return `
       ${renderNavbar()}
-      <div class="dashboard-container">
-        <div class="hero-section animate-fade-in-up">
-          <h1><span class="text-gradient">TCS NQT 2026</span><br>Coding Platform</h1>
-          <p class="hero-subtitle">
-            Master 20 curated coding problems from TCS NQT 2026 & CodeChef.
-            Practice, submit, and track your progress.
-          </p>
-          <div class="hero-actions">
-            <button class="btn btn-primary btn-lg" onclick="location.hash='#/problems'" id="start-practice-btn">
-              Start Practicing
-            </button>
-            ${!session ? `
-              <button class="btn btn-secondary btn-lg" onclick="location.hash='#/login'" id="hero-signin-btn">
-                Create Account
-              </button>
-            ` : ''}
-          </div>
-          <div class="hero-quick-stats">
-            <div class="hero-quick-stat">
-              <div class="stat-number">${PROBLEMS.length}</div>
-              <div class="stat-desc">Curated Problems</div>
-            </div>
-            <div class="hero-quick-stat">
-              <div class="stat-number">${CATEGORIES.length - 1}</div>
-              <div class="stat-desc">Categories</div>
-            </div>
-            <div class="hero-quick-stat">
-              <div class="stat-number">4</div>
-              <div class="stat-desc">Languages</div>
-            </div>
-            <div class="hero-quick-stat">
-              <div class="stat-number">∞</div>
-              <div class="stat-desc">Submissions</div>
-            </div>
-          </div>
-        </div>
-
-        ${session ? `
-        <div class="section">
-          <div class="section-header">
-            <h2>Your Progress</h2>
-          </div>
-          <div class="progress-overview animate-fade-in-up">
-            <div class="progress-ring-wrapper">
-              <div class="progress-ring-container">
-                <svg width="140" height="140" class="progress-ring">
-                  <circle class="progress-ring-bg" cx="70" cy="70" r="54"
-                    stroke-width="10" fill="none" />
-                  <circle class="progress-ring-fill" cx="70" cy="70" r="54"
-                    stroke-width="10" fill="none"
-                    stroke="url(#progressGrad)"
-                    stroke-linecap="round"
-                    stroke-dasharray="${circumference}"
-                    stroke-dashoffset="${offset}" />
-                  <defs>
-                    <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stop-color="#6366f1" />
-                      <stop offset="100%" stop-color="#06b6d4" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <span class="progress-ring-text text-gradient">${solvedPercent}%</span>
+      <div class="dashboard-split" style="margin-top: 100px;">
+        <div class="main-content">
+          <div class="hero-split animate-fade-in-up">
+            <div class="hero-text">
+              <h1 class="text-gradient" style="background: linear-gradient(135deg, #a8b2d1, #fff); -webkit-background-clip: text; color: transparent;">Code.<br>Compete.<br>Conquer.</h1>
+              <p class="hero-subtitle">
+                The premier arena for next-generation algorithmic battles.
+              </p>
+              <div class="hero-actions" style="margin-top: 32px; gap:16px; display:flex;">
+                <button class="btn btn-primary btn-lg" style="border-radius: 24px;" onclick="location.hash='#/problems'">
+                  Start Solving Now
+                </button>
+                <button class="btn btn-secondary btn-lg" style="border-radius: 24px; background:transparent; border-color:rgba(99, 102, 241, 0.5); color:var(--text-primary)">
+                  Join Contests
+                </button>
               </div>
             </div>
-            <div class="progress-details">
-              <h3>${stats.solved} of ${stats.total} problems solved</h3>
-              <div class="difficulty-stats">
-                <div class="difficulty-stat">
-                  <span class="badge badge-easy">Easy</span>
-                  <div class="difficulty-bar">
-                    <div class="difficulty-bar-fill easy" style="width:${easyProblems.length > 0 ? (easySolved / easyProblems.length) * 100 : 0}%"></div>
-                  </div>
-                  <span class="text-sm text-muted">${easySolved}/${easyProblems.length}</span>
+            
+            <div class="hero-graphics">
+              <div class="mock-editor">
+                <div class="mock-header">
+                  <div class="mock-dot r"></div>
+                  <div class="mock-dot y"></div>
+                  <div class="mock-dot g"></div>
+                  <div class="mock-title">main.cpp</div>
                 </div>
-                <div class="difficulty-stat">
-                  <span class="badge badge-medium">Medium</span>
-                  <div class="difficulty-bar">
-                    <div class="difficulty-bar-fill medium" style="width:${mediumProblems.length > 0 ? (mediumSolved / mediumProblems.length) * 100 : 0}%"></div>
-                  </div>
-                  <span class="text-sm text-muted">${mediumSolved}/${mediumProblems.length}</span>
+                <div class="mock-body">
+                  <div><span class="mock-keyword">#include</span> <span class="mock-string">&lt;iostream&gt;</span></div>
+                  <div><span class="mock-keyword">#include</span> <span class="mock-string">&lt;vector&gt;</span></div>
+                  <br>
+                  <div><span class="mock-keyword">int</span> <span class="mock-function">main</span>() {</div>
+                  <div style="padding-left: 16px;"><span class="mock-keyword">if</span> (arena == 0) {</div>
+                  <div style="padding-left: 32px;"><span class="mock-function">recursive_solve</span>();</div>
+                  <div style="padding-left: 32px;"><span class="mock-keyword">return</span> 1;</div>
+                  <div style="padding-left: 16px;">}</div>
+                  <div style="padding-left: 16px;"><span class="mock-keyword">return</span> 0;</div>
+                  <div>}</div>
                 </div>
-                <div class="difficulty-stat">
-                  <span class="badge badge-hard">Hard</span>
-                  <div class="difficulty-bar">
-                    <div class="difficulty-bar-fill hard" style="width:${hardProblems.length > 0 ? (hardSolved / hardProblems.length) * 100 : 0}%"></div>
+                
+                <div class="ai-insights">
+                  <div class="ai-header">
+                    <div style="width:24px; height:24px; background:var(--accent-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px;">🤖</div>
+                    AI Insights
                   </div>
-                  <span class="text-sm text-muted">${hardSolved}/${hardProblems.length}</span>
+                  <div class="ai-suggestion">Time complexity can be optimized to O(N log N) using divide & conquer.</div>
+                  <div class="ai-suggestion">Consider edge cases where arena size is negative.</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="stats-grid stagger-children">
-            <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(99,102,241,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
-              <div class="stat-value">${stats.solved}/${stats.total}</div>
-              <div class="stat-label">Problems Solved</div>
+          <div class="section animate-fade-in-up" style="animation-delay: 100ms;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+              <h3 style="font-size:1.2rem">Upcoming Contests</h3>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-icon" style="background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1);">❮</button>
+                <button class="btn btn-icon" style="background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1);">❯</button>
+              </div>
             </div>
-            <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(16,185,129,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
-              <div class="stat-value">${solvedPercent}%</div>
-              <div class="stat-label">Completion Rate</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(245,158,11,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-              <div class="stat-value">${stats.attempted}</div>
-              <div class="stat-label">In Progress</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon" style="background:rgba(6,182,212,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg></div>
-              <div class="stat-value">${(await Leaderboard.getUserRank(session.username)) || '-'}</div>
-              <div class="stat-label">Your Rank</div>
-            </div>
-          </div>
-        </div>
-        ` : ''}
+            
+            <div class="contests-grid">
+              <div class="contest-card">
+                <div class="contest-header">
+                  <div class="contest-title">Algo Sprint #42</div>
+                  <div class="badge" style="background:rgba(16,185,129,0.2); color:#10b981"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; margin-right:4px;"></span>Live</div>
+                </div>
+                <div class="contest-timer text-gradient">00 : 12 : 35</div>
+                <div class="contest-footer">
+                  <div>👥 8 Participants</div>
+                  <button class="btn-arena" onclick="location.hash='#/problems'">Enter Arena</button>
+                </div>
+              </div>
 
-        <div class="section">
-          <div class="section-header">
-            <h2>Problem Categories</h2>
+              <div class="contest-card">
+                <div class="contest-header">
+                  <div class="contest-title">Data Structures Cup</div>
+                  <div class="badge" style="background:rgba(245,158,11,0.2); color:#f59e0b">Soon</div>
+                </div>
+                <div class="contest-timer">00 : 08 : 09 : 00</div>
+                <div class="contest-footer">
+                  <div>👥 2 Participants</div>
+                  <button class="btn-arena">Register</button>
+                </div>
+              </div>
+
+              <div class="contest-card">
+                <div class="contest-header">
+                  <div class="contest-title">Weekly Challenge</div>
+                  <div class="badge" style="background:rgba(99,102,241,0.2); color:#818cf8">In 3 days</div>
+                </div>
+                <div class="contest-timer">00 : 29 : 26</div>
+                <div class="contest-footer">
+                  <div>👥 8 Participants</div>
+                  <button class="btn-arena">Register</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="category-grid stagger-children">
-            ${categoryCards}
+
+          <div class="section animate-fade-in-up" style="animation-delay: 200ms;">
+            <h3 style="font-size:1.2rem; margin-bottom:20px;">Popular Problem Categories</h3>
+            <div class="pill-categories">
+              ${categoryPills}
+            </div>
           </div>
         </div>
+
+        ${sidebarContent}
       </div>
-      ${renderFooter()}
+      
+      <footer class="footer" style="margin-top: 60px;">
+        <div class="footer-inner">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="brand-icon" style="width:24px; height:24px; background:var(--accent-gradient); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:white;">⟨/⟩</div>
+            <strong style="font-size:1rem;">CodeArena</strong>
+          </div>
+          <div class="footer-links" style="display:flex; gap:16px; font-size:0.8rem; color:var(--text-secondary);">
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
+      </footer>
     `;
   }
 
